@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.generation</groupId>
-	<artifactId>BeeLearn</artifactId>
+	<artifactId>brogpessoal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>BeeLearn</name>
+	<name>brogpessoal</name>
 	<description>Project of a social network to share knowledge.</description>
 	<properties>
 		<java.version>11</java.version>
