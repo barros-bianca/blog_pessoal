@@ -3,6 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+<<<<<<< HEAD
 
 <parent>
 
@@ -35,6 +36,22 @@
 <java.version>11</java.version>
 
 </properties>
+=======
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.6.1</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>org.generation</groupId>
+	<artifactId>brogpessoal</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>brogpessoal</name>
+	<description>Project of a social network to share knowledge.</description>
+	<properties>
+		<java.version>11</java.version>
+	</properties>
+>>>>>>> 14ad2fce900b038a416b75ed862c61fff60f0669
 	<dependencies>
 
 		<dependency>
