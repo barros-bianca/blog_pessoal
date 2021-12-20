@@ -23,7 +23,7 @@ public class BlogUserServices {
 
 	private @Autowired UserRepository repository;
 	private UserCredentialsDTO credentials;
-	private UserModel user;
+
 
 	private static String criptoPassword(String password) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
