@@ -1,5 +1,6 @@
 package org.generation.brogpessoal.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.generation.brogpessoal.model.UserModel;
@@ -14,5 +15,8 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 
 	Optional<UserModel> findByEmail(String email);
 
+	public List<UserModel> findAllByNomeContainingIgnoreCase(String name);
+	
+	public Optional<UserModel> findByUser(String user);
 }
 

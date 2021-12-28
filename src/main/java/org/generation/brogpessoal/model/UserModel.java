@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "tb_users")
 public class UserModel {
 
-
 	private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long idUser;
 	private String token;
 	private String name;
@@ -27,7 +26,16 @@ public class UserModel {
 	// Relations
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("UserModel")
-	private List<UserModel> user = new ArrayList<>();
+	private List<Postagem> postagem = new ArrayList<>();
+
+	
+	public List<Postagem> getPostagem() {
+		return postagem;
+	}
+
+	public void setPostagem(List<Postagem> postagem) {
+		this.postagem = postagem;
+	}
 
 	public Long getIdUser() {
 		return idUser;
@@ -68,15 +76,5 @@ public class UserModel {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public List<UserModel> getUser() {
-		return user;
-	}
-
-	public void setUser(List<UserModel> user) {
-		this.user = user;
-	}
-
-	
 
 }

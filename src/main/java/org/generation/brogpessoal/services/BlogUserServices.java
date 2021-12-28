@@ -60,6 +60,19 @@ public class BlogUserServices {
 			return ResponseEntity.status(201).body(repository.save(user));
 		}
 	}
+	
+	public Optional<UserModel> atualizarUsuario(UserModel usuario) {
+		if (repository.findById(usuario.getIdUser()).isPresent()) {
+			Optional<UserModel> buscaUsuario = repository.findByUser(usuario.getToken());
+			if (buscaUsuario.isPresent()) {
+				if (buscaUsuario.get().getIdUser() != usuario.getIdUser())
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
+			}
+			usuario.setPassword(criptoPassword(usuario.getPassword()));
+			return Optional.of(repository.save(usuario));
+		}
+		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado!", null);
+	}
 
 	public ResponseEntity<UserCredentialsDTO> getCredentials(@Valid UserLoginDTO userDto) {
 		return repository.findByEmail(userDto.getEmail()).map(resp -> {
@@ -81,6 +94,8 @@ public class BlogUserServices {
 		}).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email incorreto!"));
 		
 	}
+
+
 
 }
 
