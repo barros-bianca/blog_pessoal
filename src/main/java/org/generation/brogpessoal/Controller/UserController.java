@@ -54,9 +54,9 @@ public class UserController {
 		return services.registerUser(newUser);
 	}
 
-	@PutMapping("/credenciais")
-	public ResponseEntity<UserLogin> credentials(@Valid @RequestBody UserLogin user) {
-		return services.getCredentials(user);
+	@PostMapping("/credenciais")
+	public ResponseEntity<UserLogin> credentials(@Valid @RequestBody UserLogin userDto) {
+		return services.getCredentials(userDto);
 	}
 	
 	@PutMapping("/atualizar")

@@ -43,7 +43,7 @@ public class BlogUserServices {
 
 	public ResponseEntity<UserModel> registerUser(@Valid UserModel newUser) {
 
-		Optional<UserModel> optional = repository.findByEmail(newUser.getEmail());
+		Optional<UserModel> optional = repository.findAllByNameContainingIgnoreCase(newUser.getName());
 
 		if (optional.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -73,13 +73,14 @@ public class BlogUserServices {
 	}
 	
 	public ResponseEntity<UserLogin> getCredentials(@Valid UserLogin userDto) {
-		return repository.findByEmail(userDto.getEmail()).map(resp -> {
+		return repository.findAllByNameContainingIgnoreCase(userDto.getName()).map(resp -> {
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 			if (encoder.matches(userDto.getPassword(), resp.getPassword())) {
 
 				credentials = new UserLogin();
 				credentials.setIdUser(resp.getIdUser());
+				credentials.setName(resp.getName());
 				credentials.setEmail(resp.getEmail());
 				credentials.setToken(resp.getToken());
 				credentials.setPhoto(resp.getPhoto());
