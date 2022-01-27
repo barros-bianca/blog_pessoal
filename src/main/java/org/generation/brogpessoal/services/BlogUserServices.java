@@ -6,10 +6,8 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.apache.commons.codec.binary.Base64;
+import org.generation.brogpessoal.model.UserLogin;
 import org.generation.brogpessoal.model.UserModel;
-import org.generation.brogpessoal.model.dtos.UserCredentialsDTO;
-import org.generation.brogpessoal.model.dtos.UserLoginDTO;
-import org.generation.brogpessoal.model.dtos.UserRegisterDTO;
 import org.generation.brogpessoal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,8 +20,8 @@ import org.springframework.web.server.ResponseStatusException;
 public class BlogUserServices {
 
 	private @Autowired UserRepository repository;
-	private UserCredentialsDTO credentials;
-
+	private UserLogin credentials;
+	private UserModel user;
 
 	private static String criptoPassword(String password) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -35,16 +33,15 @@ public class BlogUserServices {
 		byte[] structureBase64 = Base64.encodeBase64(structure.getBytes(Charset.forName("US-ASCII")));
 		return new String(structureBase64);
 	}
-	
+
 	private static String generatorTokenBasic(String email, String password) {
 		String structure = email + ":" + password;
 		byte[] structureBase64 = Base64.encodeBase64(structure.getBytes(Charset.forName("US-ASCII")));
 		return "Basic" + new String(structureBase64);
-		
-		
+
 	}
 
-	public ResponseEntity<UserModel> registerUser(@Valid UserRegisterDTO newUser) {
+	public ResponseEntity<UserModel> registerUser(@Valid UserModel newUser) {
 
 		Optional<UserModel> optional = repository.findByEmail(newUser.getEmail());
 
@@ -56,14 +53,15 @@ public class BlogUserServices {
 			user.setName(newUser.getName());
 			user.setEmail(newUser.getEmail());
 			user.setToken(generatorToken(newUser.getEmail(), newUser.getPassword()));
+			user.setTokenBasic(generatorTokenBasic(newUser.getEmail(), newUser.getPassword()));
 			user.setPassword(criptoPassword(newUser.getPassword()));
 			return ResponseEntity.status(201).body(repository.save(user));
 		}
 	}
-	
+
 	public Optional<UserModel> atualizarUsuario(UserModel usuario) {
 		if (repository.findById(usuario.getIdUser()).isPresent()) {
-			Optional<UserModel> buscaUsuario = repository.findByUser(usuario.getToken());
+			Optional<UserModel> buscaUsuario = repository.findByEmail(usuario.getToken());
 			if (buscaUsuario.isPresent()) {
 				if (buscaUsuario.get().getIdUser() != usuario.getIdUser())
 					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
@@ -73,29 +71,29 @@ public class BlogUserServices {
 		}
 		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado!", null);
 	}
-
-	public ResponseEntity<UserCredentialsDTO> getCredentials(@Valid UserLoginDTO userDto) {
+	
+	public ResponseEntity<UserLogin> getCredentials(@Valid UserLogin userDto) {
 		return repository.findByEmail(userDto.getEmail()).map(resp -> {
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-			
+
 			if (encoder.matches(userDto.getPassword(), resp.getPassword())) {
-				
-				credentials = new UserCredentialsDTO();
+
+				credentials = new UserLogin();
 				credentials.setIdUser(resp.getIdUser());
 				credentials.setEmail(resp.getEmail());
 				credentials.setToken(resp.getToken());
+				credentials.setPhoto(resp.getPhoto());
+				credentials.setType(resp.getType());				
 				credentials.setTokenBasic(generatorTokenBasic(userDto.getEmail(), userDto.getPassword()));
-				
+
 				return ResponseEntity.status(200).body(credentials);
 			} else {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senha incorreta!");
 			}
-			
+
 		}).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email incorreto!"));
-		
+
 	}
-
-
 
 }
 

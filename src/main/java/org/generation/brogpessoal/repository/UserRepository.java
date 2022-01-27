@@ -10,13 +10,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<UserModel, Long> {
 
-	Optional<UserModel> findByToken(String token);
-
-
-	Optional<UserModel> findByEmail(String email);
-
-	public List<UserModel> findAllByNomeContainingIgnoreCase(String name);
+	public List<UserModel> findAllByNameContainingIgnoreCase(String name);
 	
-	public Optional<UserModel> findByUser(String user);
+	public Optional<UserModel> findByEmail(String email);
+	
+	public Optional<UserModel> findByToken(String token);
+	
 }
 

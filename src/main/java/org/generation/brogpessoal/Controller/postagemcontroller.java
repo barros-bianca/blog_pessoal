@@ -43,7 +43,7 @@ public class postagemcontroller {
 		return ResponseEntity.ok(repository.findAllBytituloContainingIgnoreCase(titulo));
 	}
 
-	@PostMapping
+	@PostMapping ("/novo")
 	public ResponseEntity<Postagem> post(@Valid @RequestBody Postagem postagem) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(postagem));
 	}
