@@ -52,6 +52,10 @@ public class BlogUserServices {
 			UserModel user = new UserModel();
 			user.setName(newUser.getName());
 			user.setEmail(newUser.getEmail());
+			user.setToken(newUser.getToken());
+			user.setPhoto(newUser.getPhoto());
+			user.setType(newUser.getType());	
+			
 			user.setToken(generatorToken(newUser.getEmail(), newUser.getPassword()));
 			user.setTokenBasic(generatorTokenBasic(newUser.getEmail(), newUser.getPassword()));
 			user.setPassword(criptoPassword(newUser.getPassword()));
