@@ -33,9 +33,9 @@ public class TemaController {
 		return ResponseEntity.ok(repository.findAll());
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Tema> GetById(@PathVariable long id) {
-		return repository.findById(id).map(resp -> ResponseEntity.ok(resp)).orElse(ResponseEntity.notFound().build());
+	@GetMapping("/{idTema}")
+	public ResponseEntity<Tema> GetById(@PathVariable long idTema) {
+		return repository.findById(idTema).map(resp -> ResponseEntity.ok(resp)).orElse(ResponseEntity.notFound().build());
 	}
 
 	@GetMapping("/nome/{nome}")
@@ -43,7 +43,7 @@ public class TemaController {
 		return ResponseEntity.ok(repository.findAllByDescricaoContainingIgnoreCase(nome));
 	}
 
-	@PostMapping
+	@PostMapping("/novo")
 	public ResponseEntity<Tema> post(@Valid @RequestBody Tema tema) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(tema));
 	}
@@ -53,9 +53,9 @@ public class TemaController {
 		return ResponseEntity.status(HttpStatus.OK).body(repository.save(tema));
 	}
 
-	@DeleteMapping("/{id}")
-	public void delete(@PathVariable long id) {
-		repository.deleteById(id);
+	@DeleteMapping("/apagar/{idTema}")
+	public void delete(@PathVariable long idTema) {
+		repository.deleteById(idTema);
 	}
 
 	public TemaRepository getRepository() {

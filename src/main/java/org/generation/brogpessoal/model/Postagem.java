@@ -26,7 +26,7 @@ public class Postagem {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private long idPost;
 	
 	
 	@NotNull
@@ -54,10 +54,10 @@ public class Postagem {
 		this.user = user;
 	}
 	public long getId() {
-		return id;
+		return idPost;
 	}
 	public void setId(long id) {
-		this.id = id;
+		this.idPost= id;
 	}
 	public String getTitulo() {
 		return titulo;
